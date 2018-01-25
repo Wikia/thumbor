@@ -15,7 +15,7 @@ from tempfile import mkstemp
 from subprocess import Popen, PIPE
 from io import BytesIO
 
-from PIL import Image, ImageFile, ImageDraw, ImageSequence, JpegImagePlugin
+from PIL import Image, ImageFile, ImageDraw, ImageSequence, JpegImagePlugin, ImageFilter
 
 from thumbor.engines import BaseEngine
 from thumbor.engines.extensions.pil import GifWriter
@@ -111,7 +111,7 @@ class Engine(BaseEngine):
             d = ImageDraw.Draw(self.image)
         except IOError:
             d = ImageDraw.Draw(self.image)
-        d.rectangle([x, y, x + width, y + height])
+        d.rectangle([x, y, x + width, y + height], outline=(255,0,0,255))
 
         del d
 
@@ -338,11 +338,15 @@ class Engine(BaseEngine):
             self.image = converted_image
         return converted_image.mode, converted_image.tobytes()
 
-    def convert_to_grayscale(self, update_image=True, with_alpha=True):
+    def convert_to_grayscale(self, update_image=True, with_alpha=True, with_smooth=False):
         if 'A' in self.image.mode and with_alpha:
             image = self.image.convert('LA')
         else:
             image = self.image.convert('L')
+
+        if (with_smooth):
+            image = image.filter(ImageFilter.SMOOTH)
+
         if update_image:
             self.image = image
         return image

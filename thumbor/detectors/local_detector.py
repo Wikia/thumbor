@@ -37,7 +37,8 @@ class CascadeLoaderDetector(BaseDetector):
         img = np.array(
             engine.convert_to_grayscale(
                 update_image=False,
-                with_alpha=False
+                with_alpha=False,
+                with_smooth=True
             )
         )
 
