@@ -36,9 +36,9 @@ addons:
     - libboost-python-dev
     - libexiv2-dev
 before_install:
-  - echo "deb http://old-releases.ubuntu.com/ubuntu zesty main universe" | sudo tee --append /etc/apt/sources.list
+  - echo "deb http://ppa.launchpad.net/mc3man/trusty-media/ubuntu trusty main" | sudo tee --append /etc/apt/sources.list
   - sudo apt-get update
-  - sudo apt-get install ffmpeg -y -f
+  - sudo apt-get install ffmpeg -y -f --allow-unauthenticated
 install:
   - pip install --upgrade pip
   - pip install -I https://github.com/escaped/pyexiv2/archive/69dd6448f9831bd826137b7519f9d797b23ab4ec.zip
