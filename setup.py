@@ -33,6 +33,7 @@ tests_require = [
     "preggy>=1.3.0",
     "opencv-python",
     "yanc>=0.3.3",
+    "json-logging"
 ]
 
 
