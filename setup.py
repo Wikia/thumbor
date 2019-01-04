@@ -58,7 +58,7 @@ def run_setup(extension_modules=[]):
     if 'CFLAGS' not in os.environ:
         os.environ['CFLAGS'] = ''
     setup(
-        name='thumbor',
+        name='thumbor-wikia',
         version=__version__,
         description="thumbor is an open-source photo thumbnail service by globo.com",
         long_description="""
