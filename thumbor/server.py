@@ -11,6 +11,7 @@
 import sys
 import logging
 import logging.config
+import json_logging
 import warnings
 
 import os
@@ -55,6 +56,8 @@ def get_config(config_path, use_environment=False):
 
 
 def configure_log(config, log_level):
+    json_logging.ENABLE_JSON_LOGGING = True
+    json_logging.init()
     if (config.THUMBOR_LOG_CONFIG and config.THUMBOR_LOG_CONFIG != ''):
         logging.config.dictConfig(config.THUMBOR_LOG_CONFIG)
     else:
@@ -63,7 +66,7 @@ def configure_log(config, log_level):
             format=config.THUMBOR_LOG_FORMAT,
             datefmt=config.THUMBOR_LOG_DATE_FORMAT
         )
-
+    json_logging.config_root_logger()
 
 def get_importer(config):
     importer = Importer(config)
