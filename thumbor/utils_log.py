@@ -3,6 +3,7 @@ import logging.config
 
 from pythonjsonlogger import jsonlogger
 from datetime import datetime
+from time import time
 
 def configure_log(config, log_level):
     logger = logging.getLogger()
@@ -15,8 +16,9 @@ def configure_log(config, log_level):
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
     def add_fields(self, log_record, record, message_dict):
         super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
+        createdAt = log_record.get('created', time())
+        log_record['timestamp'] = datetime.fromtimestamp(createdAt).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         log_record['appname'] = 'Thumblr'
-        log_record['timestamp'] = datetime.fromtimestamp(log_record.get('created')).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         if log_record.get('level'):
             log_record['level'] = log_record['level'].upper()
         else:
