@@ -18,7 +18,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
         createdAt = log_record.get('created', time())
         log_record['timestamp'] = datetime.fromtimestamp(createdAt).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
-        log_record['appname'] = 'Thumblr'
+        log_record['appname'] = 'thumblr'
         if log_record.get('level'):
             log_record['level'] = log_record['level'].upper()
         else:
