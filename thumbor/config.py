@@ -23,6 +23,7 @@ except NameError:
 
 home = expanduser("~")
 
+Config.define('APPLICATION_NAME', 'thumbor', 'Application name used for logging', 'Logging')
 Config.define('THUMBOR_LOG_CONFIG', None, 'Logging configuration as json', 'Logging')
 Config.define(
     'THUMBOR_LOG_FORMAT', '%(asctime)s %(name)s:%(levelname)s %(message)s',
