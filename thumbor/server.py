@@ -10,7 +10,6 @@
 
 import sys
 import logging
-import logging.config
 import warnings
 
 import os
@@ -26,6 +25,7 @@ from thumbor.importer import Importer
 from thumbor.context import Context
 from thumbor.signal_handler import setup_signal_handler
 from thumbor.utils import which
+from thumbor.utils_log import configure_log
 
 from PIL import Image
 
@@ -52,18 +52,6 @@ def get_config(config_path, use_environment=False):
                     dirname(__file__)]
 
     return Config.load(config_path, conf_name='thumbor.conf', lookup_paths=lookup_paths)
-
-
-def configure_log(config, log_level):
-    if (config.THUMBOR_LOG_CONFIG and config.THUMBOR_LOG_CONFIG != ''):
-        logging.config.dictConfig(config.THUMBOR_LOG_CONFIG)
-    else:
-        logging.basicConfig(
-            level=getattr(logging, log_level),
-            format=config.THUMBOR_LOG_FORMAT,
-            datefmt=config.THUMBOR_LOG_DATE_FORMAT
-        )
-
 
 def get_importer(config):
     importer = Importer(config)
