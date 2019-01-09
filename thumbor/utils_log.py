@@ -31,3 +31,5 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
             log_record['level'] = log_record['level'].upper()
         else:
             log_record['level'] = record.levelname
+        log_record['rawMessage'] = log_record['message']
+        log_record.pop('message', None)
