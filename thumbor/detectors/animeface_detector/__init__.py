@@ -26,7 +26,6 @@ class Detector(CascadeLoaderDetector):
         return top
 
     def detect(self, callback):
-        logger.debug('anime detection')
         try:
             features = self.get_features()
         except Exception as e:
@@ -36,11 +35,10 @@ class Detector(CascadeLoaderDetector):
             return
 
         if features:
-            logger.debug(features)
             for (left, top, width, height), neighbors in features:
                 top = self.__add_hair_offset(top, height)
                 self.context.request.focal_points.append(
-                    FocalPoint.from_square(left, top, width, height, origin="Anime Detection")
+                    FocalPoint.from_square(left, top, width, height, origin="Anime Face Detection")
                 )
             callback()
         else:
