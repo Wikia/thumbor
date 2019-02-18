@@ -290,7 +290,7 @@ Config.define(
 # ANIME FACE DETECTOR CASCADE FILE
 Config.define(
     'ANIME_FACE_DETECTOR_CASCADE_FILE', 'lbpcascade_animeface.xml',
-    'The cascade file that opencv will use to detect faces.', 'Detection')
+    'The cascade file that opencv will use to detect anime faces.', 'Detection')
 
 Config.define(
     'GLASSES_DETECTOR_CASCADE_FILE', 'haarcascade_eye_tree_eyeglasses.xml',
