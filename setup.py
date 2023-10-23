@@ -115,7 +115,9 @@ def run_setup(extension_modules=None):
         os.environ["CFLAGS"] = ""
 
     setup(
-        name="thumbor",
+        # Fandom-change-start: Change package name so it dosn't clash in artifactory
+        name="thumbor-fandom",
+        # Fandom-change-end
         version=version,
         description="thumbor is an open-source photo thumbnail service by globo.com",
         long_description=long_description,
@@ -158,6 +160,9 @@ def run_setup(extension_modules=None):
             "thumbor-plugins-gifv==0.*,>=0.1.2",
             "webcolors==1.*,>=1.10.0",
             "JpegIPTC>=1.4",
+            # Fandom-change-start: Configure json logging
+            "python-json-logger>=2.0.7",
+            # Fandom-change-end
         ],
         extras_require={
             "all": ALL_REQUIREMENTS,

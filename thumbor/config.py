@@ -20,6 +20,12 @@ from thumbor.handler_lists import BUILTIN_HANDLERS
 
 HOME = expanduser("~")
 
+# Fandom-change-start: Configure json logging
+Config.define(
+    "APPLICATION_NAME", "thumbor", "Application name used for logging", "Logging"
+)
+# Fandom-change-end
+
 Config.define(
     "THUMBOR_LOG_CONFIG", None, "Logging configuration as json", "Logging"
 )
@@ -649,6 +655,12 @@ Config.define(
     + "full names of python modules (python must be able to import it)",
     "Detection",
 )
+
+# Fandom-change-start: add custom animeface_detector
+Config.define(
+    'ANIME_FACE_DETECTOR_CASCADE_FILE', 'lbpcascade_animeface.xml',
+    'The cascade file that opencv will use to detect faces.', 'Detection')
+# Fandom-change-end
 
 # FACE DETECTOR CASCADE FILE
 Config.define(

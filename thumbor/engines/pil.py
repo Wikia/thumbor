@@ -15,7 +15,7 @@ from tempfile import mkstemp
 
 import piexif
 from JpegIPTC import JpegIPTC
-from PIL import Image, ImageDraw, ImageFile, ImageSequence, JpegImagePlugin
+from PIL import Image, ImageDraw, ImageFile, ImageSequence, JpegImagePlugin, ImageFilter
 from PIL import features as pillow_features
 
 from thumbor.engines import BaseEngine
@@ -186,7 +186,9 @@ class Engine(BaseEngine):
             draw_image = ImageDraw.Draw(self.image)
         except IOError:
             draw_image = ImageDraw.Draw(self.image)
-        draw_image.rectangle([x, y, x + width, y + height])
+        # Fandom-change-start: Make image smooth before running feace detection
+        draw_image.rectangle([x, y, x + width, y + height], outline=(255, 0, 0, 255))
+        # Fandom-change-end
 
         del draw_image
 
@@ -525,12 +527,19 @@ class Engine(BaseEngine):
 
         return converted_image.mode, converted_image.tobytes()
 
-    def convert_to_grayscale(self, update_image=True, alpha=True):
+    # Fandom-change-start: Make image smooth before running feace detection
+    def convert_to_grayscale(self, update_image=True, alpha=True, with_smooth=False):
+    # Fandom-change-end
         if "A" in self.image.mode and alpha:
             image = self.image.convert("LA")
         else:
             image = self.image.convert("L")
 
+        # Fandom-change-start: Make image smooth before running feace detection
+        if (with_smooth):
+            image = image.filter(ImageFilter.SMOOTH)
+
+        # Fandom-change-end
         if update_image:
             self.image = image
 
