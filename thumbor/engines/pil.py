@@ -529,7 +529,7 @@ class Engine(BaseEngine):
 
     # Fandom-change-start: Make image smooth before running feace detection
     def convert_to_grayscale(self, update_image=True, alpha=True, with_smooth=False):
-    # Fandom-change-end
+        # Fandom-change-end
         if "A" in self.image.mode and alpha:
             image = self.image.convert("LA")
         else:
