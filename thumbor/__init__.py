@@ -10,5 +10,7 @@
 
 """This is the main module in thumbor"""
 
-__version__ = "7.6.0.5"
-__release_date__ = "25-Oct-2023"
+# Add `+fandom` to indicate that this version should be used as primary
+# See https://peps.python.org/pep-0440/#local-version-identifiers
+__version__ = "7.6.0+fandom.1"
+__release_date__ = "14-Nov-2023"

@@ -73,7 +73,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
 
 def configure_log(config, log_level):
     formatter = CustomJsonFormatter(
-        '(created) (name) (message) (funcName) (pathname) (filename) (lineno)',
+        '%(created)s %(name)s %(message)s %(funcName)s %(pathname)s %(filename)s %(lineno)s',
         config.APPLICATION_NAME,
         '%Y-%m-%dT%H:%M:%S.%fZ'
     )

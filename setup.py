@@ -115,9 +115,7 @@ def run_setup(extension_modules=None):
         os.environ["CFLAGS"] = ""
 
     setup(
-        # Fandom-change-start: Change package name so it dosn't clash in artifactory
-        name="thumbor-fandom",
-        # Fandom-change-end
+        name="thumbor",
         version=version,
         description="thumbor is an open-source photo thumbnail service by globo.com",
         long_description=long_description,
