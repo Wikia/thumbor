@@ -138,16 +138,37 @@ slogan into an original tee and order it immediately.
     Erico Andrei - CTO
 
 .. figure:: http://www.gravatar.com/avatar/0a4f4e23260b57fdba6380fe0ad5b84b.jpg 
-    :alt: Ridelink
+    :alt: HeyCar
+
 `HeyCar <https://hey.car/>`__
 
-    HeyCar is using Thumbor to optmize images for each customers device, taking network and screen sizes into account.
+    HeyCar is using Thumbor to optimize images for each customers device, taking network and screen sizes into account.
 
     Our Thumbor instances run on our Kubernetes Cluster, served behind a CloudFront instance for caching purposes.
 
     Huge Thanks to all Thumbor Contributors!
     
     Marcelo Boeira - Software Engineer
+    
+.. figure:: https://www.modalova.fr/images/logo.png
+    :alt: Modalova
+    :width: 300px
+
+`Modalova <https://www.modalova.fr/>`__
+
+    Modalova is an online shopping website dedicated to fashion for men and women.
+
+    We use Thumbor to generate product thumbnails on our website `Modalova`, on the grid and also on the Product Pages.
+    
+    We serve more than 2,000,000 products to our customers everyday and work with more than 10,000 brands on the fashion Market.
+    
+    Our Thumbor instances are running on Heroku, behind the CDN Cloudflare.
+    
+    Thanks again for this wonderful project,
+    
+    Cheers!
+    
+    Gabriel Kaam - CEO & Founder
 
 How to add my site or product here
 ----------------------------------
@@ -155,3 +176,4 @@ How to add my site or product here
 If you are using thumbor and your site or product is not listed here,
 please create an issue and we'll include your logo and a short
 description on how you are using it here.
+

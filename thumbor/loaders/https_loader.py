@@ -9,26 +9,22 @@
 # Copyright (c) 2011 globo.com thumbor@googlegroups.com
 
 from thumbor.loaders import http_loader
-from tornado.concurrent import return_future
 
 
 def _normalize_url(url):
     url = http_loader.quote_url(url)
-    return url if url.startswith('http') else 'https://%s' % url
+    return url if url.startswith("http") else f"https://{url}"
 
 
 def validate(context, url):
-    return http_loader.validate(context, url, normalize_url_func=_normalize_url)
+    return http_loader.validate(
+        context, url, normalize_url_func=_normalize_url
+    )
 
 
-def return_contents(response, url, callback, context):
-    return http_loader.return_contents(response, url, callback, context)
-
-
-@return_future
-def load(context, url, callback):
-    return http_loader.load_sync(context, url, callback, normalize_url_func=_normalize_url)
-
-
-def encode(string):
-    return http_loader.encode(string)
+async def load(context, url):
+    return await http_loader.load(
+        context,
+        url,
+        normalize_url_func=_normalize_url,
+    )

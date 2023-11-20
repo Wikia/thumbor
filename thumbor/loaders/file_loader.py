@@ -8,49 +8,48 @@
 # http://www.opensource.org/licenses/mit-license
 # Copyright (c) 2011 globo.com thumbor@googlegroups.com
 
-from os import fstat
 from datetime import datetime
-from os.path import join, exists, abspath
-
-from six.moves.urllib.parse import unquote
-from tornado.concurrent import return_future
+from os import fstat
+from os.path import abspath, exists, isfile, join
+from urllib.parse import unquote
 
 from thumbor.loaders import LoaderResult
 
 
-@return_future
-def load(context, path, callback):
+async def load(context, path):
     file_path = join(
-        context.config.FILE_LOADER_ROOT_PATH.rstrip('/'), path.lstrip('/'))
+        context.config.FILE_LOADER_ROOT_PATH.rstrip("/"), path.lstrip("/")
+    )
     file_path = abspath(file_path)
     inside_root_path = file_path.startswith(
-        abspath(context.config.FILE_LOADER_ROOT_PATH))
+        abspath(context.config.FILE_LOADER_ROOT_PATH)
+    )
 
     result = LoaderResult()
 
     if not inside_root_path:
         result.error = LoaderResult.ERROR_NOT_FOUND
         result.successful = False
-        callback(result)
-        return
+        return result
 
     # keep backwards compatibility, try the actual path first
     # if not found, unquote it and try again
     if not exists(file_path):
         file_path = unquote(file_path)
 
-    if exists(file_path):
-        with open(file_path, 'r') as f:
-            stats = fstat(f.fileno())
+    if exists(file_path) and isfile(file_path):
+        with open(file_path, "rb") as source_file:
+            stats = fstat(source_file.fileno())
 
             result.successful = True
-            result.buffer = f.read()
+            result.buffer = source_file.read()
 
             result.metadata.update(
                 size=stats.st_size,
-                updated_at=datetime.utcfromtimestamp(stats.st_mtime))
+                updated_at=datetime.utcfromtimestamp(stats.st_mtime),
+            )
     else:
         result.error = LoaderResult.ERROR_NOT_FOUND
         result.successful = False
 
-    callback(result)
+    return result

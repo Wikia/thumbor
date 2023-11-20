@@ -6,18 +6,18 @@ double* normalize_kernel(PyObject *kernel, Py_ssize_t size, PyObject *should_nor
     double *items = (double*)malloc(size * sizeof(double));
 
     for (i = 0; i < size; ++i) {
-        PyObject *obj = PyTuple_GET_ITEM(kernel, i);
+        PyObject *obj = PyTuple_GetItem(kernel, i);
         if (PyFloat_Check(obj)) {
-            sum += (items[i] = PyFloat_AS_DOUBLE(obj));
+            sum += (items[i] = PyFloat_AsDouble(obj));
         }
-        if (PyInt_Check(obj)) {
-            sum += (items[i] = (double)PyInt_AS_LONG(obj));
+        if (PyLong_Check(obj)) {
+            sum += (items[i] = (double)PyLong_AS_LONG(obj));
         }
-        if (PyString_Check(obj)) {
-            sum += (items[i] = atof(PyString_AsString(obj)));
+        if (PyBytes_Check(obj)) {
+            sum += (items[i] = atof(PyBytes_AsString(obj)));
         }
         if (PyUnicode_Check(obj)) {
-            sum += (items[i] = atof(PyString_AsString(PyUnicode_AsUTF8String(obj))));
+            sum += (items[i] = atof(PyBytes_AsString(PyUnicode_AsUTF8String(obj))));
         }
     }
 
@@ -55,15 +55,16 @@ _convolution_apply(PyObject *self, PyObject *args)
 
     double *kernel = normalize_kernel(kernel_tuple, kernel_size, should_normalize);
 
-    Py_ssize_t size = PyString_Size(buffer);
-    img_buffer = (unsigned char *)PyString_AsString(buffer);
+    Py_ssize_t size = PyBytes_Size(buffer);
+    img_buffer = (unsigned char *)PyBytes_AsString(buffer);
     copy_buffer = (unsigned char *)malloc(size * sizeof(unsigned char));
     memcpy(copy_buffer, img_buffer, size * sizeof(unsigned char));
 
     int num_bytes = bytes_per_pixel(image_mode);
     int r_idx = rgb_order(image_mode, 'R'),
         g_idx = rgb_order(image_mode, 'G'),
-        b_idx = rgb_order(image_mode, 'B');
+        b_idx = rgb_order(image_mode, 'B'),
+        a_idx = rgb_order(image_mode, 'A');
 
     int rows_count = kernel_size / columns_count,
         mid_x = columns_count >> 1,
@@ -76,7 +77,7 @@ _convolution_apply(PyObject *self, PyObject *args)
 
     for (img_y = 0; img_y < height; ++img_y) {
         for (img_x = 0; img_x < width; ++img_x) {
-            double sum_r = 0, sum_g = 0, sum_b = 0;
+            double sum_r = 0, sum_g = 0, sum_b = 0, sum_a = 0;
 
             for (pos_y = img_y - mid_y; pos_y <= img_y + mid_y; ++pos_y) {
                 for(pos_x = img_x - mid_x; pos_x <= img_x + mid_x; ++pos_x) {
@@ -88,12 +89,19 @@ _convolution_apply(PyObject *self, PyObject *args)
                     sum_r += copy_buffer[tmp_idx + r_idx] * kernel_value;
                     sum_g += copy_buffer[tmp_idx + g_idx] * kernel_value;
                     sum_b += copy_buffer[tmp_idx + b_idx] * kernel_value;
+                    // Change alpha channel only when available
+                    if (num_bytes > 3) {
+                        sum_a += copy_buffer[tmp_idx + a_idx] * kernel_value;
+                    }
                 }
             }
 
             img_buffer[r_idx] = ADJUST_COLOR((int)sum_r);
             img_buffer[g_idx] = ADJUST_COLOR((int)sum_g);
             img_buffer[b_idx] = ADJUST_COLOR((int)sum_b);
+            if (num_bytes > 3) {
+                img_buffer[a_idx] = ADJUST_COLOR((int)sum_a);
+            }
             img_buffer += num_bytes;
         }
     }

@@ -8,9 +8,10 @@
 # http://www.opensource.org/licenses/mit-license
 # Copyright (c) 2011 globo.com thumbor@googlegroups.com
 
+# Fandom-change-start: add custom animeface_detector
+from typing import Dict
+
 from thumbor.detectors.local_detector import CascadeLoaderDetector
-from thumbor.point import FocalPoint
-from thumbor.utils import logger
 
 HAIR_OFFSET = 0.12
 
@@ -21,25 +22,15 @@ class Detector(CascadeLoaderDetector):
         super(Detector, self).__init__(context, index, detectors)
         self.load_cascade_file(__file__, self.context.config.ANIME_FACE_DETECTOR_CASCADE_FILE)
 
-    def __add_hair_offset(self, top, height):
-        top = max(0, top - height * HAIR_OFFSET)
-        return top
+    def get_origin(self) -> str:
+        return "Anime Detection"
 
-    def detect(self, callback):
-        try:
-            features = self.get_features()
-        except Exception as e:
-            logger.exception(e)
-            logger.warn('Error during face detection; skipping to next detector')
-            self.next(callback)
-            return
+    def get_detection_offset(
+            self, left: int, top: int, width: int, height: int
+    ) -> Dict[str, int]:
+        top_offset = -1 * height * HAIR_OFFSET
 
-        if features:
-            for (left, top, width, height), neighbors in features:
-                top = self.__add_hair_offset(top, height)
-                self.context.request.focal_points.append(
-                    FocalPoint.from_square(left, top, width, height, origin="Anime Face Detection")
-                )
-            callback()
-        else:
-            self.next(callback)
+        if top - height * HAIR_OFFSET < 0.0:
+            top_offset = 0.0
+
+        return {"top": top_offset}

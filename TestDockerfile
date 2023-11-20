@@ -1,0 +1,25 @@
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-slim
+WORKDIR /app
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends --no-install-suggests \
+        python3-dev \
+        libcurl4-openssl-dev \
+        libgnutls28-dev \
+        libjpeg-progs \
+        libimage-exiftool-perl \
+        gifsicle \
+        scons \
+        python3-all-dev \
+        ffmpeg \
+        make \
+        zlib1g-dev \
+        gcc \
+        libssl-dev \
+        libjpeg-dev \
+        libwebp-dev \
+        redis && \
+    apt-get install -y --reinstall --no-install-recommends --no-install-suggests build-essential && \
+    apt-get clean
+
+RUN pip install --upgrade pip

@@ -24,9 +24,9 @@ detector that supports queued detection.
 
 Thumbor ships with three such detectors, called:
 
--  thumbor.detectors.queued\_detector.queued\_complete\_detector
--  thumbor.detectors.queued\_detector.queued\_face\_detector
--  thumbor.detectors.queued\_detector.queued\_feature\_detector
+-  ``thumbor.detectors.queued_detector.queued_complete_detector``
+-  ``thumbor.detectors.queued_detector.queued_face_detector``
+-  ``thumbor.detectors.queued_detector.queued_feature_detector``
 
 These are responsible, respectively, for pipeline detection of face and
 feature, only face or only feature.
@@ -54,3 +54,9 @@ If the image still hasn't been processed, the same process from before
 applies, except thumbor won't place another message in the queue. This
 is intended as a way not to flood the queue with requests for the same
 image.
+
+Redis Support
+-------------
+
+Thumbor supports `Redis single node <https://redis.io/docs/getting-started/>`_.
+and `Redis sentinel <https://redis.io/docs/manual/sentinel/>`_.

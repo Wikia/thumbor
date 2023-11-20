@@ -3,17 +3,17 @@
 static PyObject*
 _noise_apply(PyObject *self, PyObject *args)
 {
-    PyObject *buffer = NULL, *amount = NULL, *seed = NULL, *image_mode = NULL;
+    PyObject *buffer = NULL;
+    char *image_mode_str;
+    int amount_int, seed_int;
 
-    if (!PyArg_UnpackTuple(args, "apply", 3, 4, &image_mode, &amount, &buffer, &seed)) {
+    if (!PyArg_ParseTuple(args, "siO|i:apply", &image_mode_str, &amount_int, &buffer, &seed_int)) {
         return NULL;
     }
 
-    char *image_mode_str = PyString_AsString(image_mode);
-    Py_ssize_t size = PyString_Size(buffer);
-    unsigned char *ptr = (unsigned char *) PyString_AsString(buffer);
-    int amount_int = (int) PyInt_AsLong(amount);
-    int seed_int = (int) PyInt_AsLong(seed);
+    Py_ssize_t size = PyBytes_Size(buffer);
+    unsigned char *ptr = (unsigned char *) PyBytes_AsString(buffer);
+
     int num_bytes = bytes_per_pixel(image_mode_str);
     int r_idx = rgb_order(image_mode_str, 'R'),
         g_idx = rgb_order(image_mode_str, 'G'),
@@ -24,11 +24,11 @@ _noise_apply(PyObject *self, PyObject *args)
         size -= num_bytes;
 
         if (seed_int > 0) {
-            srand(seed_int);
+            srandom(seed_int);
         }
 
         for (; i <= size; i += num_bytes) {
-            rand_val = (rand() % amount_int) - (amount_int >> 1);
+            rand_val = (random() % amount_int) - (amount_int >> 1);
 
             r = ptr[i + r_idx];
             g = ptr[i + g_idx];

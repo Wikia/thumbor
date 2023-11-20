@@ -66,6 +66,7 @@ Java
 PHP
 ~~~
 
+-  `Thumbor-PHP <https://github.com/beeyev/thumbor-php>`__ - PHP implementation of URL generator for Thumbor. It also supports Laravel Framework.
 -  `Phumbor <https://github.com/99designs/phumbor>`__ - A minimal PHP
    client for generating Thumbor URLs.
 -  `Phumbor for Laravel <https://github.com/ceejayoz/laravel-phumbor>`__
@@ -90,6 +91,10 @@ Objective-C
 ~~~~
 -  `DotNetThumbor <https://github.com/mi9/DotNetThumbor>`__ - DotNet client for the Thumbor image service.
    Provides an expressive fluent API.
+   
+Delphi
+~~~~~~
+-  `DelphiThumbor <https://github.com/marlonnardi/DelphiThumbor>`__ - Delphi class to thumbor. These are used to generate safe urls among others (by `Marlon Nardi <https://github.com/marlonnardi>`__).
 
 Implementing a library
 ----------------------
@@ -119,7 +124,7 @@ Here's how it was implemented in Ruby:
 
     def sign_in_thumbor(key, str)
         #bash command to call thumbor's decrypt method
-        command = "python -c 'from thumbor.crypto import Signer; signer = Signer(\"" << key << "\"); print signer.signature(\"" << str << "\")'"
+        command = "python3 -c 'from libthumbor.url_signers.base64_hmac_sha1 import UrlSigner; signer = UrlSigner(\"" << key << "\"); print(signer.signature(\"" << str << "\").decode(\"utf-8\"))'"
 
         #execute it in the shell using ruby's popen mechanism
         result = Array.new

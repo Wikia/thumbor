@@ -1,0 +1,66 @@
+name: build
+on:
+  push:
+  pull_request:
+
+permissions:
+  checks: write # to create new checks (coverallsapp/github-action)
+
+jobs:
+  build:
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      checks: write # to create new checks (coverallsapp/github-action)
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image-tag:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+    steps:
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+        with:
+          key: thumbor-docker-${{ matrix.image-tag }}-{hash}
+          restore-keys: |
+            thumbor-docker-${{ matrix.image-tag }}-
+      - uses: actions/checkout@v4
+      - name: Build test image
+        run: docker build -t test_image -f TestDockerfile --build-arg PYTHON_VERSION=${{ matrix.image-tag }} .
+      - name: Start test container
+        run: |
+          docker run -dt --name thumbor_test -v $(pwd):/app test_image
+      - name: Fire up Redis
+        run: docker exec thumbor_test make redis
+      - name: Setup
+        run: docker exec thumbor_test make setup
+      - name: Compile Extensions
+        run: docker exec thumbor_test make compile_ext
+      - name: Run Unit Tests
+        run: docker exec thumbor_test make sequential-unit
+      - name: Run Integration Tests
+        run: docker exec -e ASYNC_TEST_TIMEOUT=30 thumbor_test make integration_run
+      - name: Lint
+        run: docker exec thumbor_test make pylint
+      - name: Generate lcov
+        run: docker exec thumbor_test coverage lcov
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2.2.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage.lcov
+          flag-name: run-${{ matrix.image-tag }}
+          parallel: true
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2.2.3
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true

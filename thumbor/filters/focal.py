@@ -9,26 +9,33 @@
 
 import re
 
-from thumbor.filters import BaseFilter, filter_method, PHASE_PRE_LOAD
+from thumbor.filters import PHASE_PRE_LOAD, BaseFilter, filter_method
 from thumbor.point import FocalPoint
 
 
 class Filter(BaseFilter):
     phase = PHASE_PRE_LOAD
 
-    focal_regex = re.compile("(\d+)x(\d+):(\d+)x(\d+)")
+    focal_regex = re.compile(r"(\d+)x(\d+):(\d+)x(\d+)")
 
     @filter_method(BaseFilter.String)
-    def focal(self, focal_string):
+    async def focal(self, focal_string):
         parsed = self.focal_regex.match(focal_string)
 
         if parsed:
             left, top, right, bottom = parsed.groups()
-            left, top, right, bottom = int(left), int(top), int(right), int(bottom)
+            left, top, right, bottom = (
+                int(left),
+                int(top),
+                int(right),
+                int(bottom),
+            )
             width = right - left
             height = bottom - top
 
             if width and height:
                 self.context.request.focal_points.append(
-                    FocalPoint.from_square(left, top, width, height, origin="Explicit")
+                    FocalPoint.from_square(
+                        left, top, width, height, origin="Explicit"
+                    )
                 )

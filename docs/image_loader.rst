@@ -69,24 +69,15 @@ you'll get an error.
 To use it you should set the **LOADER** configuration to
 **'thumbor.loaders.file\_loader\_http\_fallback'**.
 
+Compatibility Loader
+~~~~~~~~~~~~~~~~~~~~
 
-Custom loaders
---------------
+The compatibility loader allows you to use legacy loaders (that do not support AsyncIO)
+in order to make it easier to transition to thumbor's Python 3 version.
 
-If thumbor image loaders do not meet your needs you can implement a new
-image loader.
+To use it you should set the **LOADER** configuration to
+**'thumbor.compatibility.loader'**.
 
-The structure of the module you should implement can be seen in the http
-loader at
-`<https://github.com/thumbor/thumbor/blob/master/thumbor/loaders/http_loader.py>`_.
-
-The only required method to implement is the one that receives the
-portion of the URI that has the original image path, named **load**.
-This method also receives a callback and should call the callback with
-the results of reading the image.
-
-Another example can be seen in the filesystem loader at
-`<https://github.com/thumbor/thumbor/blob/master/thumbor/loaders/file_loader.py>`_.
-
-You can optionally implement a validate(URI) method that thumbor will
-call to make sure that your loader can accept the user required URI.
+You also need to specify what's the legacy loader that the compatibility loader will use.
+Just set the **COMPATIBILITY_LEGACY_LOADER** configuration to the full name of the legacy
+loader you want to use. i.e.: COMPATIBILITY_LEGACY_LOADER = 'tc_aws.loaders.s3_loader'

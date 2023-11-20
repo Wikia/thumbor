@@ -33,3 +33,5 @@ opencv
 .ropeproject/
 .venv
 docs/_build
+test-results
+.coverage*
