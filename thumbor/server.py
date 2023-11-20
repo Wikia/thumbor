@@ -27,6 +27,11 @@ from thumbor.console import get_server_parameters
 from thumbor.context import Context
 from thumbor.importer import Importer
 from thumbor.signal_handler import setup_signal_handler
+# Fandom-change-start: Configure json logging
+from pythonjsonlogger import jsonlogger
+from datetime import datetime
+from time import time
+# Fandom-change-end
 
 
 def get_as_integer(value):
@@ -47,15 +52,37 @@ def get_config(config_path, use_environment=False):
     )
 
 
+# Fandom-change-start: Configure json logging
+class CustomJsonFormatter(jsonlogger.JsonFormatter):
+    def __init__(self, fields, appname, date_format):
+        super(CustomJsonFormatter, self).__init__(fields)
+        self.appname = appname
+        self.date_format = date_format
+
+    def add_fields(self, log_record, record, message_dict):
+        super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
+        log_record['appname'] = self.appname
+        log_record['timestamp'] = datetime.fromtimestamp(log_record.get('created', time())).strftime(self.date_format)
+        if log_record.get('level'):
+            log_record['level'] = log_record['level'].upper()
+        else:
+            log_record['level'] = record.levelname
+        log_record['rawMessage'] = log_record['message']
+        log_record.pop('message', None)
+
+
 def configure_log(config, log_level):
-    if config.THUMBOR_LOG_CONFIG and config.THUMBOR_LOG_CONFIG != "":
-        logging.config.dictConfig(config.THUMBOR_LOG_CONFIG)
-    else:
-        logging.basicConfig(
-            level=getattr(logging, log_level),
-            format=config.THUMBOR_LOG_FORMAT,
-            datefmt=config.THUMBOR_LOG_DATE_FORMAT,
-        )
+    formatter = CustomJsonFormatter(
+        '%(created)s %(name)s %(message)s %(funcName)s %(pathname)s %(filename)s %(lineno)s',
+        config.APPLICATION_NAME,
+        '%Y-%m-%dT%H:%M:%S.%fZ'
+    )
+    log_handler = logging.StreamHandler()
+    log_handler.setFormatter(formatter)
+    logger = logging.getLogger()
+    logger.addHandler(log_handler)
+    logger.setLevel(getattr(logging, log_level))
+    # Fandom-change-end
 
 
 def get_importer(config):

@@ -43,7 +43,9 @@ class CascadeLoaderDetector(BaseDetector):
     def get_features(self):
         engine = self.context.modules.engine
         img = np.array(
-            engine.convert_to_grayscale(update_image=False, alpha=False)
+            # Fandom-change-start: Make image smooth before running face detection
+            engine.convert_to_grayscale(update_image=False, alpha=False, with_smooth=True)
+            # Fandom-change-end
         )
 
         faces = self.__class__.cascade.detectMultiScale(
