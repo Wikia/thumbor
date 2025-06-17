@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: psf/black@stable
+      - uses: psf/black@8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b
         with:
           options: "--check --verbose"
   flake8:
@@ -28,7 +28,7 @@ jobs:
       - name: Install flake8
         run: pip install flake8
       - name: Run flake8
-        uses: suo/flake8-github-action@releases/v1
+        uses: suo/flake8-github-action@3e87882219642e01aa8a6bbd03b4b0adb8542c2a
         with:
           checkName: 'flake8'
         env:
