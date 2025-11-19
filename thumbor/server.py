@@ -27,10 +27,12 @@ from thumbor.console import get_server_parameters
 from thumbor.context import Context
 from thumbor.importer import Importer
 from thumbor.signal_handler import setup_signal_handler
+
 # Fandom-change-start: Configure json logging
 from pythonjsonlogger import jsonlogger
 from datetime import datetime
 from time import time
+
 # Fandom-change-end
 
 
@@ -60,22 +62,26 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         self.date_format = date_format
 
     def add_fields(self, log_record, record, message_dict):
-        super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
-        log_record['appname'] = self.appname
-        log_record['timestamp'] = datetime.fromtimestamp(log_record.get('created', time())).strftime(self.date_format)
-        if log_record.get('level'):
-            log_record['level'] = log_record['level'].upper()
+        super(CustomJsonFormatter, self).add_fields(
+            log_record, record, message_dict
+        )
+        log_record["appname"] = self.appname
+        log_record["timestamp"] = datetime.fromtimestamp(
+            log_record.get("created", time())
+        ).strftime(self.date_format)
+        if log_record.get("level"):
+            log_record["level"] = log_record["level"].upper()
         else:
-            log_record['level'] = record.levelname
-        log_record['rawMessage'] = log_record['message']
-        log_record.pop('message', None)
+            log_record["level"] = record.levelname
+        log_record["rawMessage"] = log_record["message"]
+        log_record.pop("message", None)
 
 
 def configure_log(config, log_level):
     formatter = CustomJsonFormatter(
-        '%(created)s %(name)s %(message)s %(funcName)s %(pathname)s %(filename)s %(lineno)s',
+        "%(created)s %(name)s %(message)s %(funcName)s %(pathname)s %(filename)s %(lineno)s",
         config.APPLICATION_NAME,
-        '%Y-%m-%dT%H:%M:%S.%fZ'
+        "%Y-%m-%dT%H:%M:%S.%fZ",
     )
     log_handler = logging.StreamHandler()
     log_handler.setFormatter(formatter)

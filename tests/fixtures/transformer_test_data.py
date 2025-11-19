@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -81,7 +80,7 @@ class MockErrorSyncDetector(BaseDetector):
 
 # Test Data - pylint: disable=too-many-locals,too-many-instance-attributes
 class TestData:
-    def __init__(
+    def __init__(  # pylint: disable=too-many-positional-arguments
         self,
         source_width,
         source_height,

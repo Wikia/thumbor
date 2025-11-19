@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -12,5 +11,5 @@
 
 # Add `+fandom` to indicate that this version should be used as primary
 # See https://peps.python.org/pep-0440/#local-version-identifiers
-__version__ = "7.6.0+fandom.1"
-__release_date__ = "14-Nov-2023"
+__version__ = "7.7.7+fandom.1"
+__release_date__ = "20-Nov-2025"

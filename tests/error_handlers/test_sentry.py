@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -141,9 +140,7 @@ class SentryTestCase(TestCase):
         expect(request["headers"]).to_length(2)
 
         expect(request["headers"]).to_include("Cookie")
-        expect(request["headers"]["Cookie"]).to_equal(
-            "cookie1=value; cookie2=value2;"
-        )
+        expect(request["headers"]["Cookie"]).to_equal("[Filtered]")
         expect(request["headers"]["header1"]).to_equal("value1")
 
         expect(request["query_string"]).to_equal("a=1&b=2")

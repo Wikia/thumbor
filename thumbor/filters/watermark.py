@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -82,6 +81,10 @@ class Filter(BaseFilter):
         mos_y = self.y == "repeat"
         center_x = self.x == "center"
         center_y = self.y == "center"
+
+        inv_x = False
+        inv_y = False
+
         if not center_x and not mos_x:
             inv_x = self.x[0] == "-"
             x = int(self.x)
@@ -160,7 +163,9 @@ class Filter(BaseFilter):
         r"(?:-?\d+)|none",
         r"(?:-?\d+)|none",
     )
-    async def watermark(self, url, x, y, alpha, w_ratio=False, h_ratio=False):
+    async def watermark(
+        self, url, x, y, alpha, w_ratio=False, h_ratio=False
+    ):  # pylint: disable=too-many-positional-arguments
         self.url = url
         self.x = x
         self.y = y

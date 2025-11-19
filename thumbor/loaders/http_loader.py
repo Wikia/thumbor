@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -80,11 +79,11 @@ def return_contents(response, url, context, req_start=None):
     if req_start:
         finish = datetime.datetime.now()
         context.metrics.timing(
-            f"original_image.fetch.{code}.{netloc}",
+            f"original_image.fetch.latency.{code}.{netloc}",
             (finish - req_start).total_seconds() * 1000,
         )
         context.metrics.incr(
-            f"original_image.fetch.{code}.{netloc}",
+            f"original_image.fetch.count.{code}.{netloc}",
         )
 
     result = LoaderResult()
@@ -168,9 +167,9 @@ async def load(
                 header_key
             ) in context.config.HTTP_LOADER_FORWARD_HEADERS_WHITELIST:
                 if header_key in context.request_handler.request.headers:
-                    headers[
-                        header_key
-                    ] = context.request_handler.request.headers[header_key]
+                    headers[header_key] = (
+                        context.request_handler.request.headers[header_key]
+                    )
 
     if user_agent is None and "User-Agent" not in headers:
         user_agent = context.config.HTTP_LOADER_DEFAULT_USER_AGENT

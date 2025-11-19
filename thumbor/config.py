@@ -22,7 +22,10 @@ HOME = expanduser("~")
 
 # Fandom-change-start: Configure json logging
 Config.define(
-    "APPLICATION_NAME", "thumbor", "Application name used for logging", "Logging"
+    "APPLICATION_NAME",
+    "thumbor",
+    "Application name used for logging",
+    "Logging",
 )
 # Fandom-change-end
 
@@ -211,6 +214,13 @@ Config.define(
     False,
     "Specifies whether Heif format should be used automatically if the request accepts it "
     "(via Accept header) and pillow-heif is enabled",
+    "Imaging",
+)
+Config.define(
+    "AUTO_PNG",
+    False,
+    "Specifies whether PNG format should be used automatically if the request accepts it "
+    "(via Accept header)",
     "Imaging",
 )
 Config.define(
@@ -658,8 +668,11 @@ Config.define(
 
 # Fandom-change-start: add custom animeface_detector
 Config.define(
-    'ANIME_FACE_DETECTOR_CASCADE_FILE', 'lbpcascade_animeface.xml',
-    'The cascade file that opencv will use to detect faces.', 'Detection')
+    "ANIME_FACE_DETECTOR_CASCADE_FILE",
+    "lbpcascade_animeface.xml",
+    "The cascade file that opencv will use to detect faces.",
+    "Detection",
+)
 # Fandom-change-end
 
 # FACE DETECTOR CASCADE FILE
