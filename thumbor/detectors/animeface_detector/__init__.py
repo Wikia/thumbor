@@ -20,13 +20,15 @@ class Detector(CascadeLoaderDetector):
 
     def __init__(self, context, index, detectors):
         super(Detector, self).__init__(context, index, detectors)
-        self.load_cascade_file(__file__, self.context.config.ANIME_FACE_DETECTOR_CASCADE_FILE)
+        self.load_cascade_file(
+            __file__, self.context.config.ANIME_FACE_DETECTOR_CASCADE_FILE
+        )
 
     def get_origin(self) -> str:
         return "Anime Detection"
 
     def get_detection_offset(
-            self, left: int, top: int, width: int, height: int
+        self, left: int, top: int, width: int, height: int
     ) -> Dict[str, int]:
         top_offset = -1 * height * HAIR_OFFSET
 

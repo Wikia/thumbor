@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -44,7 +43,9 @@ class CascadeLoaderDetector(BaseDetector):
         engine = self.context.modules.engine
         img = np.array(
             # Fandom-change-start: Make image smooth before running face detection
-            engine.convert_to_grayscale(update_image=False, alpha=False, with_smooth=True)
+            engine.convert_to_grayscale(
+                update_image=False, alpha=False, with_smooth=True
+            )
             # Fandom-change-end
         )
 

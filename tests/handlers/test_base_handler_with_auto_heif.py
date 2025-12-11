@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -53,6 +52,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
 
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()
 
     @gen_test
@@ -61,6 +61,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
 
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()
 
     @gen_test
@@ -68,6 +69,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
         response = await self.get_as_heif("/unsafe/animated.gif")
 
         expect(response.code).to_equal(200)
+        expect(response.headers).not_to_include("Vary")
         expect(response.body).to_be_gif()
 
     @gen_test
@@ -78,6 +80,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
 
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()
 
     @gen_test
@@ -85,6 +88,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
         response = await self.get_as_heif("/unsafe/grayscale.jpg")
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()
 
     @gen_test
@@ -92,6 +96,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
         response = await self.get_as_heif("/unsafe/cmyk.jpg")
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()
 
     @gen_test
@@ -100,6 +105,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
             "/unsafe/filters:format(png)/cmyk.jpg"
         )
         expect(response.code).to_equal(200)
+        expect(response.headers).not_to_include("Vary")
         expect(response.body).to_be_png()
 
     @gen_test
@@ -108,6 +114,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
             "/unsafe/filters:format(gif)/cmyk.jpg"
         )
         expect(response.code).to_equal(200)
+        expect(response.headers).not_to_include("Vary")
         expect(response.body).to_be_gif()
 
     @gen_test
@@ -116,6 +123,7 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
             "/unsafe/filters:format(gif)/image.jpg"
         )
         expect(response.code).to_equal(200)
+        expect(response.headers).not_to_include("Vary")
         expect(response.body).to_be_gif()
 
     @gen_test
@@ -125,4 +133,5 @@ class ImageOperationsWithAutoHeifTestCase(BaseImagingTestCase):
         )
         expect(response.code).to_equal(200)
         expect(response.headers["Content-type"]).to_equal(MIMETYPE)
+        expect(response.headers).to_include("Vary")
         expect(response.body).to_be_heif()

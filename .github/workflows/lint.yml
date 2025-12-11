@@ -17,11 +17,11 @@ jobs:
   flake8:
     permissions:
       contents: read # to fetch code (actions/checkout)
-      checks: write # to update checks 
+      checks: write # to update checks
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
   isort:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - uses: actions/checkout@v4
@@ -44,4 +44,3 @@ jobs:
         run: pip install isort
       - name: Run isort
         run: isort thumbor tests --profile black
- 

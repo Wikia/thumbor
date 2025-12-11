@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -117,7 +116,7 @@ class Importer:  # pylint: disable=too-many-instance-attributes
         if not hasattr(tornado.concurrent, "return_future"):
             setattr(tornado.concurrent, "return_future", noop)
 
-    def import_item(
+    def import_item(  # pylint: disable=too-many-positional-arguments
         self,
         config_key=None,
         class_name=None,
@@ -146,7 +145,7 @@ class Importer:  # pylint: disable=too-many-instance-attributes
                 module = self.import_class(conf_value, get_module=True)
             setattr(self, config_key.lower(), module)
 
-    def load_multiple_item(
+    def load_multiple_item(  # pylint: disable=too-many-positional-arguments
         self,
         config_key,
         conf_value,

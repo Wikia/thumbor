@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # thumbor imaging service
@@ -20,7 +19,9 @@ class Filter(BaseFilter):
         BaseFilter.PositiveNumber,
         BaseFilter.Boolean,
     )
-    async def round_corner(self, radius, red, green, blue, transparent=False):
+    async def round_corner(
+        self, radius, red, green, blue, transparent=False
+    ):  # pylint: disable=too-many-positional-arguments
         width, height = self.engine.size
         radius_parts = radius.split("|")
         a_radius = int(radius_parts[0])
